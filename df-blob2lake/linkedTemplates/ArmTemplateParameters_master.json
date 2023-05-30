@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "df-blob2lake"
+		},
+		"LS_AzureBlobStorage1_connectionString": {
+			"value": ""
+		},
+		"LS_AzureSqlDatabaseoutput_connectionString": {
+			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=azuresqlserver00.database.windows.net;Initial Catalog=Azuresqldb001"
+		},
+		"LS_datalakegen2_accountKey": {
+			"value": ""
+		},
+		"LS_HttpServer_properties_typeProperties_url": {
+			"value": "@{linkedService().baseurl}"
+		},
+		"LS_datalakegen2_properties_typeProperties_url": {
+			"value": "https://strgdatalakegen2withblob.dfs.core.windows.net/"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

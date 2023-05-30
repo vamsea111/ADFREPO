@@ -1,0 +1,9 @@
+{
+	"name": "df-blob2lake",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "0f1d993b-7e67-490d-9f1b-441c21583d32",
+		"tenantId": "4ee7cb70-dfb4-4583-926f-172ae9f9bce4"
+	}
+}

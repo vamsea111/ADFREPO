@@ -1,0 +1,104 @@
+{
+	"name": "PL_https",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "HttpReadSettings",
+							"requestMethod": "GET"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Ds_httpinput",
+						"type": "DatasetReference",
+						"parameters": {
+							"baseurl": {
+								"value": "@variables('sourcebaseurlvar')",
+								"type": "Expression"
+							},
+							"relativeurl": {
+								"value": "@variables('sourcerelativeurlvar')",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Ds_ADLSgen2http",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "sourcerelativeurlvar",
+					"value": "suresh12345/AzureDataEngineering_Batch/blob/main/ecdc_data/hospital_admissions.csv"
+				}
+			}
+		],
+		"variables": {
+			"sourcebaseurlvar": {
+				"type": "String",
+				"defaultValue": "https://github.com/"
+			},
+			"sourcerelativeurlvar": {
+				"type": "String",
+				"defaultValue": "suresh12345/AzureDataEngineering_Batch/blob/main/ecdc_data/country_response.csv"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-05-25T18:11:46Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,25 @@
+{
+	"name": "DS_outputSQL",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSqlDatabaseoutput",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"targetcsv": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": {
+				"value": "@dataset().targetcsv",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

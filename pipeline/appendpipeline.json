@@ -3,8 +3,8 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Lookup1",
-				"type": "Lookup",
+				"name": "Get Metadata1",
+				"type": "GetMetadata",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -15,31 +15,28 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "AzureBlobStorageReadSettings",
-							"recursive": true,
-							"wildcardFileName": "*",
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
-					},
 					"dataset": {
-						"referenceName": "ds_source",
+						"referenceName": "ds_getscv",
 						"type": "DatasetReference"
 					},
-					"firstRowOnly": false
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
 				}
 			},
 			{
-				"name": "Append variable1",
-				"type": "AppendVariable",
+				"name": "ForEach1",
+				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Lookup1",
+						"activity": "Get Metadata1",
 						"dependencyConditions": [
 							"Skipped"
 						]
@@ -47,138 +44,50 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "combinedData",
-					"value": {
-						"value": "@activity('Lookup1').output.value",
+					"items": {
+						"value": "@activity('Get Metadata1').output.value",
 						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Lookup3",
-				"type": "Lookup",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "AzureBlobStorageReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
 					},
-					"dataset": {
-						"referenceName": "ds_source3",
-						"type": "DatasetReference"
-					}
-				}
-			},
-			{
-				"name": "Append variable3",
-				"type": "AppendVariable",
-				"dependsOn": [
-					{
-						"activity": "Lookup3",
-						"dependencyConditions": [
-							"Skipped"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "combinedData3",
-					"value": {
-						"value": "@activity('Lookup3').output.value",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Set variable1",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "combinedData4",
-					"value": {
-						"value": "@variables('combinedData3')",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Copy data1",
-				"type": "Copy",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "AzureBlobStorageReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
+					"activities": [
+						{
+							"name": "Append variable1",
+							"type": "AppendVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "toappendthefilenamestothisvariable",
+								"value": {
+									"value": "@item().name",
+									"type": "Expression"
+								}
+							}
 						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
+						{
+							"name": "Set variable1",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Append variable1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "s",
+								"value": {
+									"value": "@item().name",
+									"type": "Expression"
+								}
+							}
 						}
-					},
-					"sink": {
-						"type": "DelimitedTextSink",
-						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings",
-							"copyBehavior": "MergeFiles"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ""
-						}
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "ds_source",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "ds_dest2",
-						"type": "DatasetReference"
-					}
-				]
+					]
+				}
 			}
 		],
 		"variables": {
@@ -192,6 +101,15 @@
 				"type": "Array"
 			},
 			"combinedData4": {
+				"type": "Array"
+			},
+			"valuestobestoredinthisvariable": {
+				"type": "Array"
+			},
+			"toappendthefilenamestothisvariable": {
+				"type": "Array"
+			},
+			"s": {
 				"type": "Array"
 			}
 		},

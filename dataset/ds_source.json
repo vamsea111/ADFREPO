@@ -10,7 +10,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "case_deaths_uk_ind_only.csv",
 				"container": "sourcefiles"
 			},
 			"columnDelimiter": ",",

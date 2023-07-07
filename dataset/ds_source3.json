@@ -1,5 +1,5 @@
 {
-	"name": "ds_source",
+	"name": "ds_source3",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_AzureBlobStorage1",
@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "file1.txt.txt",
+				"fileName": "file3.txt.txt",
 				"container": "sourcefiles"
 			},
 			"columnDelimiter": ",",

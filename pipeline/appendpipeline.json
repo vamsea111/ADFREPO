@@ -188,8 +188,9 @@
 						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
-							"fileListPath": {
-								"value": "@concat('sourcefiles/', variables('combinedData'))",
+							"recursive": true,
+							"wildcardFileName": {
+								"value": "@variables('combinedData')",
 								"type": "Expression"
 							},
 							"enablePartitionDiscovery": false

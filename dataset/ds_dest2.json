@@ -1,17 +1,16 @@
 {
-	"name": "ds_source",
+	"name": "ds_dest2",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_AzureBlobStorage1",
+			"referenceName": "ls_AzureDataLakeStorage1",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobStorageLocation",
-				"fileName": "case_deaths_uk_ind_only.csv",
-				"container": "sourcefiles"
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "destinationfiles"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",

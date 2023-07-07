@@ -55,56 +55,6 @@
 				}
 			},
 			{
-				"name": "Lookup2",
-				"type": "Lookup",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "AzureBlobStorageReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
-					},
-					"dataset": {
-						"referenceName": "ds_source2",
-						"type": "DatasetReference"
-					}
-				}
-			},
-			{
-				"name": "Append variable2",
-				"type": "AppendVariable",
-				"dependsOn": [
-					{
-						"activity": "Lookup2",
-						"dependencyConditions": [
-							"Skipped"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "combinedData2",
-					"value": {
-						"value": "@activity('Lookup2').output.value",
-						"type": "Expression"
-					}
-				}
-			},
-			{
 				"name": "Lookup3",
 				"type": "Lookup",
 				"dependsOn": [],
@@ -190,7 +140,7 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
 							"wildcardFileName": {
-								"value": "@variables('combinedData')",
+								"value": "@variables('combinedData4')",
 								"type": "Expression"
 							},
 							"enablePartitionDiscovery": false
@@ -208,7 +158,7 @@
 						"formatSettings": {
 							"type": "DelimitedTextWriteSettings",
 							"quoteAllText": true,
-							"fileExtension": ".txt"
+							"fileExtension": ""
 						}
 					},
 					"enableStaging": false,
@@ -229,7 +179,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ds_dest",
+						"referenceName": "ds_dest2",
 						"type": "DatasetReference"
 					}
 				]
